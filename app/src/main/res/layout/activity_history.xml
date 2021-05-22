@@ -21,7 +21,7 @@
         app:cardElevation="20dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="800dp"
+            android:layout_height="500dp"
             android:orientation="vertical"
             android:padding="16dp">
             <View
@@ -36,8 +36,296 @@
                 android:gravity="center"
                 android:textSize="18sp"
                 android:paddingTop="5dp"
+                android:paddingBottom="10dp"
                 android:textColor="@color/black"
-                android:text="Riwayat Pemakaian Air Tahun Ini"/>
+                android:text="@string/riwayat_pemakaian_air_tahun_ini"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:stretchColumns="3">
+                <TableRow>
+                    <TextView
+                        android:background="@color/primaryColor"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/bulan"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:gravity="center"/>
+                    <TextView
+                        android:background="@color/primaryColor"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/air"
+                        android:gravity="center"/>
+                    <TextView
+                        android:background="@color/primaryColor"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/biaya"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/januari"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/februari"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/maret"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/april"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/mei"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="500 L"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="Rp. 2000"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/juni"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/juli"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/agustus"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/september"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/oktober"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/november"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/desember"
+                        android:textColor="@color/black"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="100dp"
+                        android:padding="5dp"
+                        android:text="@string/_0_l"
+                        android:gravity="center"/>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="150dp"
+                        android:padding="5dp"
+                        android:text="@string/rp_0"
+                        android:gravity="center"/>
+                </TableRow>
+
+
+            </TableLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -36,6 +36,33 @@
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp">
 
+        <!-- Nama -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nama"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/nama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:textColorHint="@color/gray"
+            android:gravity="center"
+            android:hint="@string/masukkan_nama"
+            android:autofillHints="nama"
+            android:drawableLeft="@drawable/ic_user"
+            android:backgroundTint="@color/gray"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp">
+        </EditText>
+
         <!-- Email -->
         <TextView
             android:layout_width="match_parent"
@@ -72,6 +99,7 @@
             android:padding="10dp"
             android:textSize="20sp"
             android:textColor="@color/black"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,9 +110,9 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="@string/masukkan_password"
-                android:drawableLeft="@drawable/ic_lock"
                 android:autofillHints="password"
                 android:gravity="center"
+                android:drawableLeft="@drawable/ic_lock"
                 android:backgroundTint="@color/gray"
                 android:textColorHint="@color/gray"
                 android:textColor="@color/black"
@@ -106,39 +134,29 @@
         android:layout_width="300dp"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_margin="40dp">
         <Button
-            android:padding="10dp"
             android:id="@+id/login"
+            android:layout_width="65dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/panel"
+            android:drawableRight="@drawable/ic_back"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"/>
+        <RelativeLayout
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            tools:ignore="UselessLeaf" />
+        <Button
+            android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/panel"
-            android:backgroundTint="@color/white"
-            android:text="@string/login"
+            android:padding="10dp"
+            android:text="@string/register"
             android:textSize="20sp"
             android:textColor="@color/white"/>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="15dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Belum punya akun?"
-                android:textColor="@color/black"
-                android:textSize="18sp"/>
-            <TextView
-                android:id="@+id/daftar"
-                android:paddingLeft="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/primaryColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/daftar"/>
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

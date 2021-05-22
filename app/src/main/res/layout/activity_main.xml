@@ -57,12 +57,13 @@
                 android:text="@string/pemakaian_air_bulan_ini">
             </TextView>
             <TextView
+                android:id="@+id/air"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="80sp"
-                android:text="@string/_320_l">
+                android:text="@string/_0_l">
             </TextView>
         </LinearLayout>
     </LinearLayout>
@@ -91,6 +92,7 @@
                 android:text="@string/biaya_pemakaian_bulan_ini">
             </TextView>
             <TextView
+                android:id="@+id/biaya"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,8 +100,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/red"
                 android:textSize="40sp"
-                android:text="@string/rp_12800"
-                tools:ignore="HardcodedText">
+                android:text="@string/rp_0">
             </TextView>
         </LinearLayout>
     </LinearLayout>
@@ -123,6 +124,7 @@
                 android:layout_margin="10dp"
                 android:id="@+id/lineChart">
             </com.github.mikephil.charting.charts.LineChart>
+
         </LinearLayout>
     </LinearLayout>
 

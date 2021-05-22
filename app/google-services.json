@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1044075164703",
-    "project_id": "smartpdam-2635b",
-    "storage_bucket": "smartpdam-2635b.appspot.com"
+    "project_number": "85592639561",
+    "project_id": "smartpdam-961a8",
+    "storage_bucket": "smartpdam-961a8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1044075164703:android:3b5e7c447bbc270678912a",
+        "mobilesdk_app_id": "1:85592639561:android:94fb8359619082be2fd798",
         "android_client_info": {
           "package_name": "com.rozikmaliki.smartpdam"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1044075164703-ah4c07qfatis50vauc9m0j4j00nje4bn.apps.googleusercontent.com",
+          "client_id": "85592639561-ufdltotckun3r7ldcjqjuig3alqvgm7e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWjHmwhDfBnt6XIaukqEsk2QnW_W7V9XU"
+          "current_key": "AIzaSyBzsUUJZQMeCAc9qk9flepAkGmeVWvC_lA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1044075164703-ah4c07qfatis50vauc9m0j4j00nje4bn.apps.googleusercontent.com",
+              "client_id": "85592639561-ufdltotckun3r7ldcjqjuig3alqvgm7e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

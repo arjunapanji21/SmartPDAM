@@ -3,12 +3,15 @@ package com.rozikmaliki.smartpdam;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,10 +26,21 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,14 +50,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
-    TextView userName;
+    TextView txtAir, txtBiaya;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    DatabaseReference root =  database.getReference();
 
-    private String userEmail;
+    private String userID, currMonth, bulan;
+    float bln1,bln2,bln3,bln4,bln5,bln6,bln7,bln8,bln9,bln10,bln11,bln12;
+    float air1,air2,air3,air4,air5,air6,air7,air8,air9,air10,air11,air12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // get component id
+        txtAir = findViewById(R.id.air);
+        txtBiaya = findViewById(R.id.biaya);
+
+        if(user == null){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        // get user id
+        userID = user.getUid();
+
+        // get current month
+        DateFormat dateFormat = new SimpleDateFormat("M");
+        Date date = new Date();
+        currMonth = dateFormat.format(date);
+
+        pemakaianBulanIni();
 
         getLineChart();
         getNavigationView();
@@ -69,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(MainActivity.this, "Berhasil Logout!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
                 break;
@@ -76,7 +117,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
-    public NavigationView getNavigationView() {
+    public void pemakaianBulanIni() {
+        // get database references
+        DatabaseReference air =  root.child("users").child(userID).child("bulan").child(currMonth).child("air");
+        DatabaseReference biaya =  root.child("users").child(userID).child("bulan").child(currMonth).child("biaya");
+
+        air.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                String value = snapshot.getValue(String.class);
+                txtAir.setText(value+" L");
+                Toast.makeText(MainActivity.this, "Updated!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Database Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        biaya.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                String value = snapshot.getValue(String.class);
+                txtBiaya.setText("Rp. "+value);
+                //Toast.makeText(MainActivity.this, "Updated!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Database Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getNavigationView() {
         // navigation bar
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.nav_view);
@@ -95,17 +170,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView navUsername = headerView.findViewById(R.id.userName);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            userEmail = user.getEmail();
-        }
-        navUsername.setText("Hi! "+userEmail);
-        return navigationView;
+        userID = user.getUid();
+
+        DatabaseReference userName = root.child("users").child(userID).child("nama");
+        userName.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                String value = snapshot.getValue(String.class);
+                navUsername.setText("Hi! "+value);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Database Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public LineChart getLineChart() {
+    public void getLineChart() {
         lineChart = findViewById(R.id.lineChart);
         LineDataSet lineDataSet = new LineDataSet(lineChartDataSet(),"Riwayat Pemakaian Air Tahun Ini");
-
         ArrayList<ILineDataSet> iLineDataSet = new ArrayList<>();
         iLineDataSet.add(lineDataSet);
 
@@ -129,17 +213,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lineChart.setDrawGridBackground(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.getAxisRight().setEnabled(false);
-
-        return lineChart;
     }
 
     private ArrayList<Entry> lineChartDataSet(){
         ArrayList<Entry> dataSet = new ArrayList<>();
-        dataSet.add(new Entry(1,320));
-        dataSet.add(new Entry(2,210));
-        dataSet.add(new Entry(3,560));
-        dataSet.add(new Entry(4,1204));
-        dataSet.add(new Entry(5,342));
+        dataSet.add(new Entry(1,0));
+        dataSet.add(new Entry(2,0));
+        dataSet.add(new Entry(3,0));
+        dataSet.add(new Entry(4,0));
+        dataSet.add(new Entry(5,500));
         dataSet.add(new Entry(6,0));
         dataSet.add(new Entry(7,0));
         dataSet.add(new Entry(8,0));
