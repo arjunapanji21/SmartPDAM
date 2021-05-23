@@ -39,7 +39,7 @@ public class RegistrasiActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference root =  database.getReference();
 
-    private String userID, userName;
+    private String userID, bulan;
 
     boolean passwordVisibility = false;
 
@@ -115,17 +115,52 @@ public class RegistrasiActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     String txtNama = nama.getText().toString();
 
-//                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-//                            .setDisplayName(txtNama).build();
-//
-//                    user.updateProfile(profileUpdates);
-
                     userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     for (int i = 1; i<=12;i++){
-                        root.child("users").child(userID).child("bulan").child(String.valueOf(i)).child("air").setValue("0");
-                        root.child("users").child(userID).child("bulan").child(String.valueOf(i)).child("biaya").setValue("0");
+                        switch (i){
+                            case 1:
+                                bulan = "Januari";
+                                break;
+                            case 2:
+                                bulan = "Februari";
+                                break;
+                            case 3:
+                                bulan = "Maret";
+                                break;
+                            case 4:
+                                bulan = "April";
+                                break;
+                            case 5:
+                                bulan = "Mei";
+                                break;
+                            case 6:
+                                bulan = "Juni";
+                                break;
+                            case 7:
+                                bulan = "Juli";
+                                break;
+                            case 8:
+                                bulan = "Agustus";
+                                break;
+                            case 9:
+                                bulan = "September";
+                                break;
+                            case 10:
+                                bulan = "Oktober";
+                                break;
+                            case 11:
+                                bulan = "November";
+                                break;
+                            case 12:
+                                bulan = "Desember";
+                                break;
+                        }
+                        root.child("users").child(userID).child("data").child(String.valueOf(i)).child("bulan").setValue(bulan);
+                        root.child("users").child(userID).child("data").child(String.valueOf(i)).child("air").setValue("0");
+                        root.child("users").child(userID).child("data").child(String.valueOf(i)).child("biaya").setValue("0");
+
+                        root.child("users").child(userID).child("chart").child(String.valueOf(i)).child("x").setValue(String.valueOf(i));
+                        root.child("users").child(userID).child("chart").child(String.valueOf(i)).child("y").setValue("0");
                     }
                     root.child("users").child(userID).child("nama").setValue(txtNama);
                     Toast.makeText(RegistrasiActivity.this, "Registrasi berhasil!",Toast.LENGTH_SHORT).show();

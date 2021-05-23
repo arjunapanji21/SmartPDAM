@@ -1,5 +1,6 @@
 package com.rozikmaliki.smartpdam;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -50,42 +54,80 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
+    ProgressDialog progressDialog;
+
     TextView txtAir, txtBiaya;
+    ListView listView;
+    List<DataAir> dataAirList;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     DatabaseReference root =  database.getReference();
 
-    private String userID, currMonth, bulan;
-    float bln1,bln2,bln3,bln4,bln5,bln6,bln7,bln8,bln9,bln10,bln11,bln12;
-    float air1,air2,air3,air4,air5,air6,air7,air8,air9,air10,air11,air12;
+    private String userID, currMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialize
+        progressDialog = new ProgressDialog(MainActivity.this);
+        // show progress dialog
+        progressDialog.show();
+        // set content view
+        progressDialog.setContentView(R.layout.progress_dialog);
+        // set transparant background
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
         // get component id
         txtAir = findViewById(R.id.air);
         txtBiaya = findViewById(R.id.biaya);
+        listView = findViewById(R.id.listView);
+
+        dataAirList = new ArrayList<>();
 
         if(user == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
+        }else{
+            // get user id
+            userID = user.getUid();
+            // get user data
+            DatabaseReference dataUser = root.child("users").child(userID).child("data");
+
+            dataUser.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    dataAirList.clear();
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        DataAir dataAir = dataSnapshot.getValue(DataAir.class);
+                        dataAirList.add(dataAir);
+                    }
+                    ListAdapter adapter = new ListAdapter(MainActivity.this, dataAirList);
+                    listView.setAdapter(adapter);
+                    // dismis progress dialog
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                    Toast.makeText(MainActivity.this, "Database Error!", Toast.LENGTH_SHORT).show();
+                    // dismis progress dialog
+                    progressDialog.dismiss();
+                }
+            });
+
+            // get current month
+            DateFormat dateFormat = new SimpleDateFormat("M");
+            Date date = new Date();
+            currMonth = dateFormat.format(date);
+
+            pemakaianBulanIni();
+            getLineChart();
+            getNavigationView();
         }
-
-        // get user id
-        userID = user.getUid();
-
-        // get current month
-        DateFormat dateFormat = new SimpleDateFormat("M");
-        Date date = new Date();
-        currMonth = dateFormat.format(date);
-
-        pemakaianBulanIni();
-
-        getLineChart();
-        getNavigationView();
     }
 
     public void onBackPressed(){
@@ -119,15 +161,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void pemakaianBulanIni() {
         // get database references
-        DatabaseReference air =  root.child("users").child(userID).child("bulan").child(currMonth).child("air");
-        DatabaseReference biaya =  root.child("users").child(userID).child("bulan").child(currMonth).child("biaya");
+        DatabaseReference air =  root.child("users").child(userID).child("data").child(currMonth).child("air");
+        DatabaseReference biaya =  root.child("users").child(userID).child("data").child(currMonth).child("biaya");
 
         air.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 String value = snapshot.getValue(String.class);
                 txtAir.setText(value+" L");
-                Toast.makeText(MainActivity.this, "Updated!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Updated!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -187,9 +229,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void getLineChart() {
+    public void getLineChart(){
+        DatabaseReference chartData = root.child("users").child(userID).child("chart");
+        chartData.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ArrayList<Entry> dataSet = new ArrayList<>();
+                if(snapshot.hasChildren()){
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        DataChart dataChart = dataSnapshot.getValue(DataChart.class);
+                        dataSet.add(new Entry(Float.parseFloat(dataChart.getX()), Float.parseFloat(dataChart.getY())));
+                    }
+                    showChart(dataSet);
+                }else{
+                    lineChart.clear();
+                    lineChart.invalidate();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Database Error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void showChart(ArrayList<Entry> dataSet) {
         lineChart = findViewById(R.id.lineChart);
-        LineDataSet lineDataSet = new LineDataSet(lineChartDataSet(),"Riwayat Pemakaian Air Tahun Ini");
+        LineDataSet lineDataSet = new LineDataSet(dataSet,"Riwayat Pemakaian Air Tahun Ini");
         ArrayList<ILineDataSet> iLineDataSet = new ArrayList<>();
         iLineDataSet.add(lineDataSet);
 
@@ -213,22 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lineChart.setDrawGridBackground(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.getAxisRight().setEnabled(false);
-    }
 
-    private ArrayList<Entry> lineChartDataSet(){
-        ArrayList<Entry> dataSet = new ArrayList<>();
-        dataSet.add(new Entry(1,0));
-        dataSet.add(new Entry(2,0));
-        dataSet.add(new Entry(3,0));
-        dataSet.add(new Entry(4,0));
-        dataSet.add(new Entry(5,500));
-        dataSet.add(new Entry(6,0));
-        dataSet.add(new Entry(7,0));
-        dataSet.add(new Entry(8,0));
-        dataSet.add(new Entry(9,0));
-        dataSet.add(new Entry(10,0));
-        dataSet.add(new Entry(11,0));
-        dataSet.add(new Entry(12,0));
-        return dataSet;
+        lineChart.getLegend().setEnabled(false);
     }
 }
